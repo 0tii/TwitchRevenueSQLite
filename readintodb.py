@@ -2,11 +2,13 @@ import gzip as gz
 import csv
 import sqlite3 as sql
 import os
-from pathlib import Path
-import shutil
+import sys
 
-procFiles = 0
-numFiles = 0
+processed_files = 0
+number_files = 0
+
+#start params
+all_results = sys.argv.__contains__('all') #? all -> also get users with revenues <= 0
 
 #db prep
 con = sql.connect('./database.db')
@@ -57,41 +59,28 @@ def _arraySum(arr):
         index += 1
     return sum
 
-# at path unpack gzip, read csv, delete csv, return csv 
+# at path read from csv inside gz 
 def processCSV(path):
-    file = path+os.sep+'all_revenues.csv.gz'
-    fileCsv = path+os.sep+'all_revenues.csv'
-
-    with gz.open(file, 'r') as f_in:
-        with open(fileCsv, 'wb') as f_out:
-            shutil.copyfileobj(f_in, f_out)
-
-    with open(fileCsv, 'r') as csvFile:
+    with gz.open(path, 'rt') as csvFile:
         csv_reader = csv.reader(csvFile, delimiter=',')
-        line_count = 0
-        month = 0
-        year = 0
+        line_count, month, year = 0, 0, 0
         for row in csv_reader:
-            #print(f'processing line {line_count} for {month}/{year} - File {procFiles} of {numFiles}')
-            printProgressBar(iteration=procFiles, total=numFiles, suffix=f'(line {line_count} for {month}/{year}) - File {procFiles} of {numFiles}')
-            if line_count == 0: #header 
+            if line_count == 0: # skip header 
                 line_count += 1
-            elif line_count == 1: #convert date only once
+            elif line_count == 1: # convert date only once
                 date = row[11].split('/')
-                month = date[0]
-                year = date[2]
+                month, year = date[0], date[2]
                 writeToDb(row, year, month)
                 line_count += 1
             else:
                 writeToDb(row, year, month)
                 line_count += 1
-
-    os.remove(fileCsv)
-
+            printProgressBar(iteration=processed_files, total=number_files, suffix=f'(line {line_count} for {month}/{year}) - File {processed_files} of {number_files}')
+            
 # perform sql query
 def writeToDb(row, year, month):
     sum = _arraySum(row)
-    if sum == 0: return #if channel doesnt have revenue, skip
+    if sum <= 0 and not all_results: return
 
     query = f'''INSERT INTO earnings (user_id, month, year, ad_share, sub_share, bit_share, bit_developer_share, bit_extension_share, prime_sub_share, bit_share_ad, fuel_rev, bb_rev, total_gross) 
                     VALUES({row[0]}, {month}, {year}, {row[2]}, {row[3]}, {row[4]}, {row[5]}, {row[6]}, {row[7]}, {row[8]}, {row[9]}, {row[10]}, {sum})
@@ -110,16 +99,14 @@ def writeToDb(row, year, month):
     cur.execute(query)      
 
 # count number of files #!(optional)
-for root, dirs, files in os.walk('../../leak_data/payouts/all_revenues/'):
-    path = root.split(os.sep)
-    if(len(path) == 3): numFiles += 1
+for root, dirs, files in os.walk('../leak_data/payouts/all_revenues'):
+    if files: number_files += 1
 
 # walk folder tree recursively, initiating csv processing for each file
-for root, dirs, files in os.walk('../../leak_data/payouts/all_revenues/'):
-    path = root.split(os.sep)
-    if(len(path) == 3): #len(path) == 3 -> file
-        procFiles += 1
-        processCSV(root) #? csv_reader mit csv-daten aktueller file
+for root, dirs, files in os.walk('../leak_data/payouts/all_revenues'):
+    if files: 
+        processed_files += 1
+        processCSV(root+os.sep+files[0]) #? csv_reader mit csv-daten aktueller file
 
 #db close
 con.commit()
