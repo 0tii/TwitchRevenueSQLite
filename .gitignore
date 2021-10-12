@@ -1,3 +1,5 @@
 # Twitch Earnings Leak Db Tool
 # © 0ti 2021
 *.db
+__pycache__/
+db_out/
