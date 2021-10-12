@@ -16,7 +16,7 @@ Specify `--all` in order to write all channel data to the database. Else only ch
 
 You will be prompted to enter the path to the 'all_revenues' subfolder of the twitch leak folder tree. In order for this script to properly work, you must not alter the original folder tree. Both the full path to the target folder, as well as the relative path from the script directory are valid.
 
-Update as of commit 44f7a60a1787f806dcbb11b634eeac820370be6b: Path now gets checked not only for existence but for validity by subsequent sample validation.
+Update as of commit [44f7a60](https://github.com/0tii/TwitchRevenueSQLite/commit/44f7a60a1787f806dcbb11b634eeac820370be6b): Path now gets checked not only for existence but for validity by subsequent sample validation.
 
 ## Output
 
