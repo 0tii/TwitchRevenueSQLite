@@ -7,6 +7,8 @@ The script was written in Python3.9 but should run on 3.x
 
 The script works solely on vanilla libraries. Tested only on windows.
 
+**Linux users: Requires SQLite 3.24.0 or higher to function! Workaround for classic linux installations is WIP**
+
 ## Usage
 Navigate to the folder where main.py resides.
 

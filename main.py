@@ -11,7 +11,7 @@ revenue_path = ''
 
 # get path to revenues
 while True:
-    revenue_path = input('\033[93mPlease specify the path to the \'./all_revenues/\' folder of the twitch leak.\nDesired format is e.g. \'C:/.../twitch-payouts/all_revenues\'\033[0m')
+    revenue_path = input('\033[93mPlease specify the path to the \'./all_revenues/\' folder of the twitch leak.\nDesired format is e.g. \'C:/.../twitch-payouts/all_revenues\'\033[0m\n')
     if pchck.checkPath(revenue_path):
         print('\033[92mPath accepted.\033[0m')
         break
