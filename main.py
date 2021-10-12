@@ -1,5 +1,5 @@
 import gzip as gz, csv, sqlite3 as sql, os, sys
-import resources.dbtools as dbt, resources.progressbar as progbar
+import resources.dbtools as dbt, resources.progressbar as progbar, resources.patchchecker as pchck
 
 #start params
 all_results = sys.argv.__contains__('--all')
@@ -11,12 +11,12 @@ revenue_path = ''
 
 # get path to revenues
 while True:
-    revenue_path = input('\033[93mPlease specify the path to the \'./all_revenues/\' folder of the twitch leak.\nDesired format is e.g. \'C:/.../twitch-payouts/all_revenues\'\033[0m\r')
-    if os.path.exists(revenue_path):
+    revenue_path = input('\033[93mPlease specify the path to the \'./all_revenues/\' folder of the twitch leak.\nDesired format is e.g. \'C:/.../twitch-payouts/all_revenues\'\033[0m')
+    if pchck.checkPath(revenue_path):
         print('\033[92mPath accepted.\033[0m')
         break
     else:
-        print('\033[91mPlease enter a valid path\033[0m')
+        print('\033[91mPlease enter a valid path\n\033[0m')
 
 print('\nWriting all channels to database...') if all_results else print('\nWriting channels with non-zero revenue to database. Rerun with --all to get <= 0 revenue channels...')
 
