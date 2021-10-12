@@ -5,7 +5,7 @@ Python Script to generate a SQLite database including all revenues from the grea
 This script takes the path to the 'all_revenues' subfolder of the leaked folder tree and an optional parameter.
 The script was written in Python3.9 but should run on 3.x
 
-The script works solely on vanilla libraries.
+The script works solely on vanilla libraries. Tested only on windows.
 
 ## Usage
 Navigate to the folder where main.py resides.
