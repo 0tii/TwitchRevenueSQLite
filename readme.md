@@ -12,7 +12,8 @@ Navigate to the folder where main.py resides.
 
 Specify `--all` in order to write all channel data to the database. Else only channels that have revenues > 0 will be stored.
 
-You will be prompted to paste the path to the 'all_revenues' subfolder of the twitch leak folder tree. In order for this script to properly work, you must not alter the original folder tree.
+You will be prompted to enter the path to the 'all_revenues' subfolder of the twitch leak folder tree. In order for this script to properly work, you must not alter the original folder tree. Both the full path to the target folder, as well as the relative path from the script directory are valid.
+
 
 ## Output
 
