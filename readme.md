@@ -5,6 +5,8 @@ Python Script to generate a SQLite database including all revenues from the grea
 This script takes the path to the 'all_revenues' subfolder of the leaked folder tree and an optional parameter.
 The script was written in Python3.9 but should run on 3.x
 
+The script works solely on vanilla libraries.
+
 ## Usage
 Navigate to the folder where main.py resides.
 
@@ -14,6 +16,7 @@ Specify `--all` in order to write all channel data to the database. Else only ch
 
 You will be prompted to enter the path to the 'all_revenues' subfolder of the twitch leak folder tree. In order for this script to properly work, you must not alter the original folder tree. Both the full path to the target folder, as well as the relative path from the script directory are valid.
 
+Update as of commit 44f7a60a1787f806dcbb11b634eeac820370be6b: Path now gets checked not only for existence but for validity by subsequent sample validation.
 
 ## Output
 
