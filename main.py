@@ -16,7 +16,7 @@ while True:
         print('\033[92mPath accepted.\033[0m')
         break
     else:
-        print('\033[91mPlease enter a valid path\n\033[0m')
+        print('\033[91mPlease enter a valid path. To exit press Ctrl + C\n\033[0m')
 
 print('\nWriting all channels to database...') if all_results else print('\nWriting channels with non-zero revenue to database. Rerun with --all to get <= 0 revenue channels...')
 
@@ -59,9 +59,9 @@ for root, dirs, files in os.walk(revenue_path):
     if files: 
         processed_files += 1
         processCSV(root+os.sep+files[0])
+        con.commit()
 
 print('\n\033[92mTask succeeded. SQLite .db file can be found in \'./db_out/database.db\'\033[0m')
 
 #db close
-con.commit()
 con.close()
