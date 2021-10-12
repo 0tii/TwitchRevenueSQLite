@@ -2,7 +2,8 @@ import gzip as gz, csv, sqlite3 as sql, os, sys
 import resources.dbtools as dbt, resources.progressbar as progbar
 
 #start params
-all_results = sys.argv.__contains__('all')
+all_results = sys.argv.__contains__('--all')
+
 # init globals
 processed_files = 0
 number_files = 0
@@ -10,19 +11,23 @@ revenue_path = ''
 
 # get path to revenues
 while True:
-    revenue_path = input('Please specify the path to the \'./all_revenues/\' folder of the twitch leak.\nDesired format is e.g. \'C:/.../twitch-payouts/all_revenues\'\033[0m')
+    revenue_path = input('\033[93mPlease specify the path to the \'./all_revenues/\' folder of the twitch leak.\nDesired format is e.g. \'C:/.../twitch-payouts/all_revenues\'\033[0m\r')
     if os.path.exists(revenue_path):
-        print('\033[92mAccepted.\033[0m')
+        print('\033[92mPath accepted.\033[0m')
         break
     else:
-        print('\033[93mPlease enter a valid path\033[0m')
+        print('\033[91mPlease enter a valid path\033[0m')
+
+print('\nWriting all channels to database...') if all_results else print('\nWriting channels with non-zero revenue to database. Rerun with --all to get <= 0 revenue channels...')
 
 # make output dir
+print('\nMaking output directory...')
 try: os.mkdir('./db_out/')
 except OSError:
     if not os.path.exists('./db_out/'): print('\033[91mCould not create output folder. You can try manually creating ./db_out/ and restarting.\033[0m')
 
 # db prep
+print('Preparing database...')
 con = sql.connect('./db_out/database.db')
 cur = con.cursor()
 dbt.createTables(cur)
