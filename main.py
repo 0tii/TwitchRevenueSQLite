@@ -16,7 +16,7 @@ while True:
         print('\033[92mPath accepted.\033[0m')
         break
     else:
-        print('\033[91mPlease enter a valid path. To exit press Ctrl + C\n\033[0m')
+        print('\033[91mPlease enter a valid path. To exit press Ctrl + C.\n\033[0m')
 
 print('\nWriting all channels to database...') if all_results else print('\nWriting channels with non-zero revenue to database. Rerun with --all to get <= 0 revenue channels...')
 

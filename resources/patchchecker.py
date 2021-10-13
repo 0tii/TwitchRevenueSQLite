@@ -3,14 +3,15 @@ import os
 def _checkFileIntegrity(path):
     for root, dirs, files in os.walk(path):
         if files:
-            for f in files:
-                if not f.endswith('.gz'):
-                    return False
+            if len(files) > 1: #may only have 1 file per subfolder
+                return False
+            if not files[0].endswith('.gz'):
+                return False
     return True
 
 def checkPath(path):
     if os.path.exists(path):
-        if os.path.exists(path+os.sep+'2019'+os.sep+'08'+os.sep+'28'+os.sep+'all_revenues.csv.gz'):
+        if os.path.exists(path+os.sep+'2019'+os.sep+'08'+os.sep+'28'+os.sep+'all_revenues.csv.gz'): #sample path we know has to exist
             if _checkFileIntegrity(path):
                 return True
             else:
