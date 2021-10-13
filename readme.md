@@ -3,9 +3,9 @@
 
 Python Script to generate a SQLite database including all revenues from the great Twitch leak. 
 This script takes the path to the 'all_revenues' subfolder of the leaked folder tree and an optional parameter.
-The script was written in Python3.9 but should run on 3.x
+The script was written in Python3.9 but should run on 3.x. Tested on both Windows and Linux with Python 3.9.7.
 
-The script works solely on vanilla libraries. Should you want to run this on linux or with SQLite <3.24.0, refer to the usage options
+The script relies solely on vanilla libraries. **Should you want to run this on linux or with SQLite <3.24.0, refer to the usage options**
 
 ## Usage
 Navigate to the folder where main.py resides.
