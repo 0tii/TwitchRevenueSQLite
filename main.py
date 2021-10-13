@@ -3,6 +3,7 @@ import resources.dbtools as dbt, resources.progressbar as progbar, resources.pat
 
 #start params
 all_results = sys.argv.__contains__('--all')
+legacy = sys.argv.__contains__('--legacy')
 
 # init globals
 processed_files = 0
@@ -19,6 +20,7 @@ while True:
         print('\033[91mPlease enter a valid path. To exit press Ctrl + C.\n\033[0m')
 
 print('\nWriting all channels to database...') if all_results else print('\nWriting channels with non-zero revenue to database. Rerun with --all to get <= 0 revenue channels...')
+if legacy: print('\033[96mRunning in Legacy mode! This is only recommended for SQLite versions <3.24.0. If you are not running linux you should be able to update your SQLite and run this script normally.\033[0m')
 
 # make output dir
 print('\nMaking output directory...')
@@ -34,7 +36,7 @@ dbt.createTables(cur)
 
 # at path read from csv inside gz 
 def processCSV(path):
-    with gz.open(path, 'rt') as csv_file:
+    with gz.open(path, 'rt', newline='') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count, month, year = 0, 0, 0
         for row in csv_reader:
@@ -43,12 +45,12 @@ def processCSV(path):
             elif line_count == 1: # convert date only once
                 date = row[11].split('/')
                 month, year = date[0], date[2]
-                dbt.writeToDb(row, year, month, cur, all_results)
+                dbt.writeToDb(row, year, month, cur, all_results) if not legacy else dbt.writeToDbLegacy(row, year, month, cur, all_results)
                 line_count += 1
             else:
-                dbt.writeToDb(row, year, month, cur, all_results)
+                dbt.writeToDb(row, year, month, cur, all_results) if not legacy else dbt.writeToDbLegacy(row, year, month, cur, all_results)
                 line_count += 1
-            progbar.printProgressBar(iteration=processed_files, total=number_files, suffix=f'(line {line_count} for {month}/{year}) - File {processed_files} of {number_files}')
+            progbar.printProgressBar(iteration=processed_files, total=number_files, suffix=f'(line {line_count} for {month}/{year}) - File {processed_files} of {number_files} ...')
             
 # count number of files #!(optional)
 for root, dirs, files in os.walk(revenue_path):
