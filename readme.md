@@ -17,10 +17,10 @@ You will be prompted to enter the path to the 'all_revenues' subfolder of the tw
 Update as of commit [44f7a60](https://github.com/0tii/TwitchRevenueSQLite/commit/44f7a60a1787f806dcbb11b634eeac820370be6b): Path now gets checked not only for existence but for validity by subsequent sample validation.
 
 ### Options
-## `--all` 
+### `--all` 
 Write all channel data, even ones without any revenues, to the database. Else only channels that have revenues > 0 will be stored.
 
-## `--legacy` 
+### `--legacy` 
 If you plan to run this on a linux installation or system that has SQLite version <3.24.0, you will need to specify this option, else the execution will fail.
 
 ## Output
